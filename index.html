@@ -36,7 +36,7 @@
             <p>Tu descarga estará lista en <span id="countdown" style="color: #38bdf8; font-weight: bold;">30</span> segundos...</p>
             
             <div class="ad-box" id="adContainer">
-                <span>Espacio publicitario 1</span>
+                <!-- Aquí se inyectará la publicidad -->
             </div>
 
             <button id="closeAdBtn" disabled style="background:#334155; color:#94a3b8; cursor:not-allowed;">Siguiente</button>
@@ -70,7 +70,9 @@
             const cajaAnuncio = document.getElementById('adContainer');
             
             tituloAnuncio.textContent = `Publicidad Patrocinada (${faseAnuncio}/3)`;
-            cajaAnuncio.innerHTML = `<span>Espacio publicitario ${faseAnuncio}</span>`;
+            
+            // Limpiamos y aseguramos que el script de Adsterra u otro anuncio tenga espacio
+            cajaAnuncio.innerHTML = `<script type="text/javascript" src="//pl25732158.highperformancegate.com/00/51/d7/0051d7e21a2e7c9f807cb9b6cbef4516.js"><\/script>`;
             
             contadorSpan.textContent = segundos;
             botonCerrar.disabled = true;
@@ -128,6 +130,4 @@
 
     <script type="text/javascript" src="//pl25732158.highperformancegate.com/00/51/d7/0051d7e21a2e7c9f807cb9b6cbef4516.js"></script>
 </body>
-</html>
-
 </html>
