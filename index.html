@@ -39,13 +39,14 @@
                 <span>Espacio publicitario 1</span>
             </div>
 
-            <button id="closeAdBtn" disabled style="background:#334155; color:#94a3b8; cursor:not-allowed;">Siguiente</button>
+            <button id="closeAdBtn" disabled style="background:#334155; color:#94a3b8; cursor:not-allowed;">Siguiente Anuncio</button>
         </div>
     </div>
 
     <script>
         let archivosGlobales = null;
         let faseAnuncio = 1;
+        let intervaloActual = null;
 
         function iniciarProceso() {
             const fileInput = document.getElementById('fileInput');
@@ -56,10 +57,10 @@
             
             archivosGlobales = fileInput.files;
             faseAnuncio = 1;
-            mostrarAnuncio();
+            iniciarFaseAnuncio();
         }
 
-        function mostrarAnuncio() {
+        function iniciarFaseAnuncio() {
             const modal = document.getElementById('adModal');
             modal.style.display = 'flex';
             
@@ -69,10 +70,16 @@
             const tituloAnuncio = document.getElementById('adTitle');
             const cajaAnuncio = document.getElementById('adContainer');
             
+            if (intervaloActual) clearInterval(intervaloActual);
+            
             tituloAnuncio.textContent = `Publicidad Patrocinada (${faseAnuncio}/3)`;
             cajaAnuncio.innerHTML = `<span>Espacio publicitario ${faseAnuncio}</span>`;
             
             contadorSpan.textContent = segundos;
+            contadorSpan.parentElement.innerHTML = `Tu descarga estará lista en <span id="countdown" style="color: #38bdf8; font-weight: bold;">30</span> segundos...`;
+            
+            const spanActualizado = document.getElementById('countdown');
+            
             botonCerrar.disabled = true;
             botonCerrar.style.background = '#334155';
             botonCerrar.style.color = '#94a3b8';
@@ -84,13 +91,19 @@
                 botonCerrar.textContent = "Cerrar y Descargar";
             }
 
-            const intervalo = setInterval(() => {
+            botonCerrar.onclick = null;
+
+            intervaloActual = setInterval(() => {
                 segundos--;
-                contadorSpan.textContent = segundos;
+                const spanActivo = document.getElementById('countdown');
+                if(spanActivo) spanActivo.textContent = segundos;
                 
                 if (segundos <= 0) {
-                    clearInterval(intervalo);
-                    contadorSpan.parentElement.textContent = "¡Publicidad finalizada!";
+                    clearInterval(intervaloActual);
+                    if(spanActivo && spanActivo.parentElement) {
+                        spanActivo.parentElement.textContent = "¡Publicidad finalizada!";
+                    }
+                    
                     botonCerrar.disabled = false;
                     botonCerrar.style.background = '#0284c7';
                     botonCerrar.style.color = '#ffffff';
@@ -99,7 +112,7 @@
                     botonCerrar.onclick = function() {
                         if (faseAnuncio < 3) {
                             faseAnuncio++;
-                            mostrarAnuncio();
+                            iniciarFaseAnuncio();
                         } else {
                             modal.style.display = 'none';
                             ejecutarCompresionZip();
@@ -126,7 +139,6 @@
         }
     </script>
 
-    <!-- Script de Adsterra cargando de forma limpia al final -->
     <script type="text/javascript" src="//pl25732158.highperformancegate.com/00/51/d7/0051d7e21a2e7c9f807cb9b6cbef4516.js"></script>
 </body>
 </html>
