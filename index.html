@@ -39,7 +39,7 @@
                 <span>Espacio publicitario 1</span>
             </div>
 
-            <button id="closeAdBtn" disabled style="background:#334155; color:#94a3b8; cursor:not-allowed;">Siguiente Anuncio</button>
+            <button id="closeAdBtn" disabled style="background:#334155; color:#94a3b8; cursor:not-allowed;">Por favor, espere...</button>
         </div>
     </div>
 
@@ -66,8 +66,6 @@
             
             let segundos = 30;
             const statusText = document.getElementById('statusText');
-            
-            // Forzar estructura fija del contador siempre al iniciar la fase
             statusText.innerHTML = `Tu descarga estará lista en <span id="countdown" style="color: #38bdf8; font-weight: bold;">30</span> segundos...`;
             
             const botonCerrar = document.getElementById('closeAdBtn');
@@ -83,41 +81,29 @@
             botonCerrar.style.background = '#334155';
             botonCerrar.style.color = '#94a3b8';
             botonCerrar.style.cursor = 'not-allowed';
-            
-            if (faseAnuncio < 3) {
-                botonCerrar.textContent = "Siguiente Anuncio";
-            } else {
-                botonCerrar.textContent = "Cerrar y Descargar";
-            }
-
-            botonCerrar.onclick = null;
+            botonCerrar.textContent = "Por favor, espere...";
 
             intervaloActual = setInterval(() => {
                 segundos--;
                 const spanActivo = document.getElementById('countdown');
-                
                 if (spanActivo) {
                     spanActivo.textContent = segundos;
                 }
                 
                 if (segundos <= 0) {
                     clearInterval(intervaloActual);
-                    statusText.textContent = "¡Publicidad finalizada!";
                     
-                    botonCerrar.disabled = false;
-                    botonCerrar.style.background = '#0284c7';
-                    botonCerrar.style.color = '#ffffff';
-                    botonCerrar.style.cursor = 'pointer';
-                    
-                    botonCerrar.onclick = function() {
-                        if (faseAnuncio < 3) {
+                    if (faseAnuncio < 3) {
+                        statusText.textContent = "¡Cargando siguiente anuncio automáticamente...";
+                        setTimeout(() => {
                             faseAnuncio++;
                             iniciarFaseAnuncio();
-                        } else {
-                            modal.style.display = 'none';
-                            ejecutarCompresionZip();
-                        }
-                    };
+                        }, 1000);
+                    } else {
+                        statusText.textContent = "¡Proceso finalizado con éxito!";
+                        modal.style.display = 'none';
+                        ejecutarCompresionZip();
+                    }
                 }
             }, 1000);
         }
