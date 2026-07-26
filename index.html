@@ -66,9 +66,10 @@
             
             let segundos = 30;
             const statusText = document.getElementById('statusText');
+            
+            // Forzar estructura fija del contador siempre al iniciar la fase
             statusText.innerHTML = `Tu descarga estará lista en <span id="countdown" style="color: #38bdf8; font-weight: bold;">30</span> segundos...`;
             
-            const contadorSpan = document.getElementById('countdown');
             const botonCerrar = document.getElementById('closeAdBtn');
             const tituloAnuncio = document.getElementById('adTitle');
             const cajaAnuncio = document.getElementById('adContainer');
@@ -94,7 +95,10 @@
             intervaloActual = setInterval(() => {
                 segundos--;
                 const spanActivo = document.getElementById('countdown');
-                if(spanActivo) spanActivo.textContent = segundos;
+                
+                if (spanActivo) {
+                    spanActivo.textContent = segundos;
+                }
                 
                 if (segundos <= 0) {
                     clearInterval(intervaloActual);
